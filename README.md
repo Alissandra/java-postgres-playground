@@ -1,5 +1,5 @@
 ## Postgres Playground
-(https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#[https://github.com/manoelcampos/java-postgres-playground](https://github.com/Alissandra/java-postgres-playground)
+[(https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/Alissandra/java-postgres-playground)]
 
 > **Warning**
 > - O gitpod.io não funciona se você tiver a extensão do tradutor habilitada no seu navegador.
