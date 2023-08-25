@@ -3,7 +3,7 @@ package com.example;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
+//import java.sql.Statement;
 
 public class AppBd {    
 
@@ -11,17 +11,15 @@ public class AppBd {
     private static final String USERNAME = "gitpod";
     private static final String JDBC_URL = "jdbc:postgresql://localhost/postgres";
     
-    //private static String uf;
-
     public static void main(String[] args) {
         new AppBd();            
     }
 
     public AppBd() {
         try(var conn = getConnection()){
-            carregarDriverJDBC();
+            //carregarDriverJDBC();
             listarEstados(conn);           
-            localizarEstado(conn, "TO");
+            localizarEstado(conn, "PR");
         } catch (SQLException e) {            
             System.err.println("Não foi possível conectar ao banco de dados: " + e.getMessage());    
         }
@@ -29,9 +27,18 @@ public class AppBd {
 
     private void localizarEstado(Connection conn, String uf) {
         try {
-            var statement = conn.createStatement();
+            //var sql = "select * from estado where uf = '" + uf + "'"; //sucetível a SQL Injection (PERIGOSO)
+            var sql = "select * from estado where uf = ?";
+            var statement = conn.prepareStatement(sql);
+            System.out.println();
+            System.out.println(sql);
+            statement.setString(1, uf);
+            var result = statement.executeQuery();
+            if(result.next()) {
+                System.out.printf("Id: %d Nome: %s UF: %s%n", result.getInt("id"), result.getString("nome"), result.getString("uf"));
+            }
         } catch (SQLException e) {            
-            e.printStackTrace();
+            System.err.println("Erro ao executar consulta SQL: " + e.getMessage());
         }
     }
 
