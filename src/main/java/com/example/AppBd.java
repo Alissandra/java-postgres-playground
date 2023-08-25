@@ -20,8 +20,44 @@ public class AppBd {
             //carregarDriverJDBC();
             listarEstados(conn);           
             localizarEstado(conn, "PR");
+            listarDadosTabela(conn, "cliente");
+            
+            
+            var marca = new Marca();
+            marca.setId(1);
+            
+            var produto = new Produto();
+            inserirProduto(produto);
         } catch (SQLException e) {            
             System.err.println("Não foi possível conectar ao banco de dados: " + e.getMessage());    
+        }
+    }
+
+    private void listarDadosTabela(Connection conn, String tabela) {
+        var sql = "select * from " + tabela;
+        System.out.println(sql);
+        try {
+            var statement = conn.createStatement();
+            var result = statement.executeQuery(sql);
+            var metadata = result.getMetaData();
+            int cols = metadata.getColumnCount();
+
+            for (int i = 1; i <= cols; i++) {
+                System.out.printf("%-25s | ", metadata.getColumnName(i));
+            }
+
+            System.out.println();
+
+            while(result.next()) {
+                
+                for (int i = 1; i <= cols; i++) {
+                    System.out.printf("%-25s | ", result.getString(i));
+                }
+                System.out.println();
+            }
+
+        } catch (SQLException e) {            
+            System.out.println("Erro na execução da consulta: " + e.getMessage());
         }
     }
 
@@ -62,6 +98,7 @@ public class AppBd {
         return DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
     }
 
+    /* // Com os framewors modernos, como spring, essa configuração não é mais realizada
     private void carregarDriverJDBC() {
         try{            
             Class.forName("org.postgresql.Driver");
@@ -70,6 +107,7 @@ public class AppBd {
             e.printStackTrace();
         }
     }
+    */
     
     
 }
